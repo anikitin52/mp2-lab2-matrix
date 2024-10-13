@@ -199,9 +199,9 @@ public:
       if (this->size() != v.size()) {
           throw "Error!";
       }
-      T res(sz) = 0;
-      for (int i = 0; i < sz; i++) {
-          res.pMem[i] += this->pMem[i] * v.pMem[i];
+      T res = 0;
+      for (int i = 0; i < v.sz; i++) {
+          res += pMem[i] * v.pMem[i];
       }
       return res;
   }
