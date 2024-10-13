@@ -23,80 +23,173 @@ protected:
   size_t sz;
   T* pMem;
 public:
+
+
   TDynamicVector(size_t size = 1) : sz(size)
   {
     if (sz == 0)
       throw out_of_range("Vector size should be greater than zero");
-    pMem = new T[sz]();// {}; // У типа T д.б. констуктор по умолчанию
+    if (sz > MAX_VECTOR_SIZE) {
+        throw "Error!";
+    }
+    pMem = new T[sz]();
   }
+
+
   TDynamicVector(T* arr, size_t s) : sz(s)
   {
     assert(arr != nullptr && "TDynamicVector ctor requires non-nullptr arg");
     pMem = new T[sz];
     std::copy(arr, arr + sz, pMem);
   }
-  TDynamicVector(const TDynamicVector& v)
-  {
+
+
+  TDynamicVector(const TDynamicVector& v) {
+      this->sz = v.sz;
+      pMem = new T[sz];
+      std::copy(v.pMem, v.pMem + sz, pMem);
   }
+
+
   TDynamicVector(TDynamicVector&& v) noexcept
   {
+      this->pMem = v.pMem;
+      v.pMem = nullptr;
+      this->sz = v.sz;
+      v.sz = 0;
   }
+
+
   ~TDynamicVector()
   {
+      delete[] pMem;
   }
+
+
   TDynamicVector& operator=(const TDynamicVector& v)
   {
-  }
-  TDynamicVector& operator=(TDynamicVector&& v) noexcept
-  {
+      if (this != &v) { 
+          delete[] pMem; 
+          this->sz = v.sz;
+          pMem = new T[sz];
+          std::copy(v.pMem, v.pMem + sz, pMem);
+      }
       return *this;
   }
+  TDynamicVector& operator=(TDynamicVector&& v) noexcept {
+      if (this != &v) { // Проверка на самоприсваивание 
+          delete[] pMem; // Освобождение ресурсов 
+          sz = v.sz;
+          pMem = v.pMem; // Перемещение ресурсов 
+          v.pMem = nullptr; // Установка пустого значения для правого операнда 
+          v.sz = 0;
+      }
+      return *this; // Вернули ссылку на this
+  }
+
 
   size_t size() const noexcept { return sz; }
 
   // индексация
   T& operator[](size_t ind)
   {
+      return pMem[ind];
   }
   const T& operator[](size_t ind) const
   {
+      return pMem[ind];
   }
   // индексация с контролем
   T& at(size_t ind)
   {
+      if (ind < 0 || ind >= sz) {
+          throw "Error! Invalid index!";
+      }
+      else {
+          return pMem[ind];
+      }
+ 
   }
   const T& at(size_t ind) const
   {
+      if (ind < 0 || ind >= sz) {
+          throw "Error! Invalid index!";
+      }
+      else {
+          return pMem[ind];
+      }
   }
 
   // сравнение
   bool operator==(const TDynamicVector& v) const noexcept
   {
+      if (this->sz != v.sz) {
+          return false;
+      }
+      for (int i = 0; i < this->sz; i++) {
+          if (pMem[i] != v.pMem[i]) {
+              return false;
+          }
+      }
+      return true;
   }
   bool operator!=(const TDynamicVector& v) const noexcept
   {
+      if (this->sz != v.sz) {
+          return true;
+      }
+      for (int i = 0; i < this->sz; i++) {
+          if (pMem[i] != v.pMem[i]) {
+              return true;
+          }
+      }
+      return false;
   }
 
   // скалярные операции
   TDynamicVector operator+(T val)
   {
+      TDynamicVector res(sz);
+      for (int i = 0; i < sz; i++) {
+          pMem[i] += val;
+      }
+      return res;
   }
   TDynamicVector operator-(double val)
   {
+      TDynamicVector res(sz);
+      for (int i = 0; i < sz; i++) {
+          pMem[i] -= val;
+      }
+      return res;
   }
   TDynamicVector operator*(double val)
   {
   }
-
   // векторные операции
   TDynamicVector operator+(const TDynamicVector& v)
   {
+      TDynamicVector res(max(this->sz, v.sz));
+      for (int i = 0; i < max(this->sz, v.sz), i++) {
+          res.pMem[i] = this->pMem[i] + v.pMem[i];
+      }
+      return res;
   }
   TDynamicVector operator-(const TDynamicVector& v)
   {
+      TDynamicVector res(max(this->sz, v.sz));
+      for (int i = 0; i < max(this->sz, v.sz)) {
+          res.pMem[i] = this->pMem[i] - v.pMem[i];
+      }
+      return res;
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
+      TDynamicVector res(max(this->sz, v.sz));
+      for (int i = 0; i < sz; i++) {
+          res.pMem[i] = this->pMem[i] * v.pMem[i];
+      }
+      return res;
   }
 
   friend void swap(TDynamicVector& lhs, TDynamicVector& rhs) noexcept
