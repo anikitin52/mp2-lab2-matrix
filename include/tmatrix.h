@@ -165,29 +165,43 @@ public:
   }
   TDynamicVector operator*(double val)
   {
+      TDynamicVector res(sz);
+      for (int i = 0; i < sz; i++) {
+          pMem[i] *= val;
+      }
+      return res;
   }
   // векторные операции
   TDynamicVector operator+(const TDynamicVector& v)
   {
-      TDynamicVector res(max(this->sz, v.sz));
-      for (int i = 0; i < max(this->sz, v.sz), i++) {
-          res.pMem[i] = this->pMem[i] + v.pMem[i];
+      if (this->size() != v.size()) {
+          throw "Error!";
+      }
+      TDynamicVector<T> res(*this);
+      for (int i = 0; i < res.sz; i++) {
+          res.pMem[i] = pMem[i] + v.pMem[i];
       }
       return res;
   }
   TDynamicVector operator-(const TDynamicVector& v)
   {
-      TDynamicVector res(max(this->sz, v.sz));
-      for (int i = 0; i < max(this->sz, v.sz)) {
+      if (this->size() != v.size()) {
+          throw "Error!";
+      }
+      TDynamicVector<T> res(*this);
+      for (int i = 0; i < sz; i++) {
           res.pMem[i] = this->pMem[i] - v.pMem[i];
       }
       return res;
   }
   T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
   {
-      TDynamicVector res(max(this->sz, v.sz));
+      if (this->size() != v.size()) {
+          throw "Error!";
+      }
+      T res(sz) = 0;
       for (int i = 0; i < sz; i++) {
-          res.pMem[i] = this->pMem[i] * v.pMem[i];
+          res.pMem[i] += this->pMem[i] * v.pMem[i];
       }
       return res;
   }
