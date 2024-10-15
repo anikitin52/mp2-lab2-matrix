@@ -68,23 +68,20 @@ public:
 
   TDynamicVector& operator=(const TDynamicVector& v)
   {
-      if (this != &v) { 
-          delete[] pMem; 
-          this->sz = v.sz;
-          pMem = new T[sz];
-          std::copy(v.pMem, v.pMem + sz, pMem);
+      if (this == &v)
+          return *this;
+      if (sz != v.sz) {
+          T* p = new T[v.sz];
+          delete[] pMem;
+          sz = v.sz;
+          pMem = p;
       }
+      std::copy(v.pMem, v.pMem + sz, pMem);
       return *this;
   }
   TDynamicVector& operator=(TDynamicVector&& v) noexcept {
-      if (this != &v) { // Проверка на самоприсваивание 
-          delete[] pMem; // Освобождение ресурсов 
-          sz = v.sz;
-          pMem = v.pMem; // Перемещение ресурсов 
-          v.pMem = nullptr; // Установка пустого значения для правого операнда 
-          v.sz = 0;
-      }
-      return *this; // Вернули ссылку на this
+      swap(*this, v);
+      return *this;
   }
 
 
@@ -150,8 +147,8 @@ public:
   TDynamicVector operator+(T val)
   {
       TDynamicVector res(sz);
-      for (int i = 0; i < sz; i++) {
-          pMem[i] += val;
+      for (size_t i = 0; i < sz; i++) {
+          res.pMem[i] = pMem[i] + val;
       }
       return res;
   }
@@ -177,7 +174,7 @@ public:
       if (this->size() != v.size()) {
           throw "Error!";
       }
-      TDynamicVector<T> res(*this);
+      TDynamicVector res(sz);
       for (int i = 0; i < res.sz; i++) {
           res.pMem[i] = pMem[i] + v.pMem[i];
       }
