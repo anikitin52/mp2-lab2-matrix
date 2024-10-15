@@ -244,27 +244,57 @@ public:
   // сравнение
   bool operator==(const TDynamicMatrix& m) const noexcept
   {
+      return TDynamicVector<TDynamicVector >> ::operator==(m);
   }
 
   // матрично-скалярные операции
   TDynamicVector<T> operator*(const T& val)
   {
+      TDynamicMatrix res(sz);
+      for (size_t i = 0; i < sz; i++) {
+          res.pMem[i] = pMem[i] * val;
+      }
+      return res;
   }
 
   // матрично-векторные операции
   TDynamicVector<T> operator*(const TDynamicVector<T>& v)
   {
+      TDynamicVector<T> res(sz);
+      for (size_t i = 0; i < sz; i++) {
+          res[i] = pMem[i] * v;
+      }
+      return res;
   }
 
   // матрично-матричные операции
   TDynamicMatrix operator+(const TDynamicMatrix& m)
   {
+      TDynamicMatrix res(sz);
+      for (size_t i = 0; i < sz; i++) {
+          res.pMem[i] = pMem[i] + m.pMem[i];
+      }
+      return res;
   }
   TDynamicMatrix operator-(const TDynamicMatrix& m)
   {
+      TDynamicMatrix res(sz);
+      for (size_t i = 0; i < sz; i++) {
+          res.pMem[i] = pMem[i] - m.pMem[i];
+      }
+      return res;
   }
   TDynamicMatrix operator*(const TDynamicMatrix& m)
   {
+      TDynamicMatrix res(sz);
+      for (size_t i = 0; i < sz; i++) {
+          for (size_t j = 0; i < sz; j++) {
+              for (size_t k = 0; k < sz; k++) {
+                  res.pMem[i][j] += pMem[i][k] * m.pMem[k][j];
+              }
+          }
+      }
+      return res;
   }
 
   // ввод/вывод
