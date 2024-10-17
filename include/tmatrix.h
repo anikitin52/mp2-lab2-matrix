@@ -162,6 +162,7 @@ public:
   }
   TDynamicVector operator*(double val)
   {
+
       TDynamicVector res(sz);
       for (int i = 0; i < sz; i++) {
           pMem[i] *= val;
@@ -191,7 +192,7 @@ public:
       }
       return res;
   }
-  T operator*(const TDynamicVector& v) noexcept(noexcept(T()))
+  T operator*(const TDynamicVector& v) 
   {
       if (this->size() != v.size()) {
           throw "Error!";

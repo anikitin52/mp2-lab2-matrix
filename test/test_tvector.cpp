@@ -125,14 +125,14 @@ TEST(TDynamicVector, can_assign_vectors_of_different_size)
     ASSERT_EQ(v1, v2);
 }
 
-TEST(TDynamicVector, compare_equal_vectors_return_true) // не работает
+TEST(TDynamicVector, compare_equal_vectors_return_true) 
 {
     const int size = 3;
     TDynamicVector<int> v1(size);
     v1[0] = 5; v1[1] = 4; v1[2] = 3;
 
     TDynamicVector<int> v2(size);
-    v1[0] = 5; v1[1] = 4; v1[2] = 3;
+    v2[0] = 5; v2[1] = 4; v2[2] = 3;
 
     ASSERT_EQ(v1 == v2, true);
 }
@@ -146,7 +146,7 @@ TEST(TDynamicVector, compare_vector_with_itself_return_true)
     ASSERT_EQ(v1 == v1, true);
 }
 
-TEST(TDynamicVector, vectors_with_different_size_are_not_equal) // не работает
+TEST(TDynamicVector, vectors_with_different_size_are_not_equal) 
 {
     const int size = 3;
     TDynamicVector<int> v1(size);
@@ -155,7 +155,7 @@ TEST(TDynamicVector, vectors_with_different_size_are_not_equal) // не работает
     TDynamicVector<int> v2(size + 2);
     v2[0] = 1; v2[1] = 2; v2[2] = 3; v2[3] = 4, v2[4] = 5;
 
-    ASSERT_ANY_THROW(v1 = v2);
+    ASSERT_NE(v1, v2);
 }
 
 TEST(TDynamicVector, can_add_scalar_to_vector)
@@ -169,7 +169,7 @@ TEST(TDynamicVector, can_add_scalar_to_vector)
     res = v1 + number;
 
     TDynamicVector<int> v2(size);
-    v1[0] = 10; v1[1] = 9; v1[2] = 8;
+    v2[0] = 10; v2[1] = 9; v2[2] = 8;
 
     ASSERT_EQ(res, v2);
 }
@@ -261,7 +261,7 @@ TEST(TDynamicVector, cant_subtract_vectors_with_not_equal_size)
     ASSERT_ANY_THROW(v1 - v2);
 }
 
-TEST(TDynamicVector, can_multiply_vectors_with_equal_size) // Не работает
+TEST(TDynamicVector, can_multiply_vectors_with_equal_size) 
 {
     const int size = 3;
     TDynamicVector<int> v1(size);
@@ -270,21 +270,21 @@ TEST(TDynamicVector, can_multiply_vectors_with_equal_size) // Не работает
     TDynamicVector<int> v2(size);
     v2[0] = 1; v2[1] = 2; v2[2] = 3;
 
-    int res = 5 + 8 + 6;
+    int res = 5 + 8 + 9;
 
     ASSERT_EQ(v1 * v2, res);
 }
 
-TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size) // Реализовать
-{/*
+TEST(TDynamicVector, cant_multiply_vectors_with_not_equal_size) 
+{
     const int size = 3;
     TDynamicVector<int> v1(size);
     v1[0] = 5; v1[1] = 4; v1[2] = 3;
 
     TDynamicVector<int> v2(size + 2);
-    v2[0] = 1; v2[1] = 2; v2[2] = 3; v2[3] = 4, v2[4] = 5;
+    v2[0] = 1; v2[1] = 2; v2[2] = 3; v2[3] = 4; v2[4] = 5;
 
-    ASSERT_ANY_THROW(v1 * v2);*/
+    ASSERT_ANY_THROW(v1 * v2);
 }
 
 
