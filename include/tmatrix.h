@@ -249,9 +249,16 @@ public:
   }
 
   // сравнение
-  bool operator==(const TDynamicMatrix& m) const noexcept
+  bool operator==(const TDynamicMatrix& m) const 
   {
-      return TDynamicVector<TDynamicVector >> ::operator==(m);
+      if (this->sz != m.sz)
+          return false;
+      for (int i = 0; i < sz; i++) {
+          if (this->pMem[i] != m.pMem[i]) {
+              return false;
+          }
+      }
+      return true;
   }
 
   // матрично-скалярные операции

@@ -26,12 +26,12 @@ TEST(TDynamicMatrix, can_create_copied_matrix)
 
 TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 {
-	
+	ADD_FAILURE();
 }
 
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {	
-
+	ADD_FAILURE();
 }
 
 TEST(TDynamicMatrix, can_get_size)
@@ -72,11 +72,11 @@ TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
-{/*
+{ /*
 	const int size = 3;
 	TDynamicMatrix<int> m(size);
 
-	EXPECT_EQ(m = m, m); // тест верный
+	ASSERT_EQ(m = m, m);
 	*/
 }
 
@@ -91,37 +91,62 @@ TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 }
 
 TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
-{
-  ADD_FAILURE();
+{/*
+	const int size = 2; // ERROR!
+	TDynamicMatrix<int> m1(size);
+	TDynamicMatrix<int> m2(size + 1);
+
+	ASSERT_EQ(m2 = m1, m1); */
 }
 
 TEST(TDynamicMatrix, compare_equal_matrices_return_true)
 {
-  ADD_FAILURE();
+	const int size = 2;
+	TDynamicMatrix<int> m1(size);
+	TDynamicMatrix<int> m2(size);
+
+	ASSERT_EQ(m1 == m2, 1);
 }
 
 TEST(TDynamicMatrix, compare_matrix_with_itself_return_true)
-{ /*
-	const int size = 3;
+{ 
+	const int size = 2;
 	TDynamicMatrix<int> m(size);
 
 	ASSERT_EQ(m == m, 1);
-	*/
 }
 
 TEST(TDynamicMatrix, matrices_with_different_size_are_not_equal)
-{/*
-	const int size = 3; тест правильный
+{ 
+	const int size = 2;
 	TDynamicMatrix<int> m1(size);
-	TDynamicMatrix<int> m2(size + 2);
+	TDynamicMatrix<int> m2(size + 1);
 
 	ASSERT_EQ(m1 == m2, 0);
-	*/
+	
 }
 
 TEST(TDynamicMatrix, can_add_matrices_with_equal_size)
 {
-  ADD_FAILURE();
+	const int size = 2;
+	TDynamicMatrix<int> m1(size);
+	m1[0][0] = 1;
+	m1[0][1] = 2;
+	m1[1][0] = 3;
+	m1[1][1] = 4;
+	TDynamicMatrix<int> m2(size);
+	m2[0][0] = 5;
+	m2[0][1] = 6;
+	m2[1][0] = 7;
+	m2[1][1] = 8;
+
+	TDynamicMatrix<int> res = m1 + m2;
+
+	ASSERT_EQ(res[0][0], 6);
+	ASSERT_EQ(res[0][1], 8);
+	ASSERT_EQ(res[1][0], 10);
+	ASSERT_EQ(res[1][1], 12);
+
 }
 
 TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
@@ -134,21 +159,25 @@ TEST(TDynamicMatrix, cant_add_matrices_with_not_equal_size)
 }
 
 TEST(TDynamicMatrix, can_subtract_matrices_with_equal_size)
-{ /*
-	const int size = 3;
-	TDynamicVector<int> v1, v2, v3;
-	v1[0] = 1; v1[1] = 2; v2[2] = 3;
-	v2[0] = 1; v2[1] = 2; v2[2] = 3;
-	v3[0] = 1; v3[1] = 2; v3[2] = 3;
-
+{ 
+	const int size = 2;
 	TDynamicMatrix<int> m1(size);
-	m1[0] = v1; m1[1] = v2; m1[2] = v3;
-
+	m1[0][0] = 1;
+	m1[0][1] = 2;
+	m1[1][0] = 3;
+	m1[1][1] = 4;
 	TDynamicMatrix<int> m2(size);
-	m1[0] = v1 * 2; m1[1] = v2 * 2; m1[2] = v3 * 2;
+	m2[0][0] = 5;
+	m2[0][1] = 6;
+	m2[1][0] = 7;
+	m2[1][1] = 8;
 
-	ASSERT_EQ(m2 - m1, m1);
-	*/
+	TDynamicMatrix<int> res = m1 - m2;
+
+	ASSERT_EQ(res[0][0], -4);
+	ASSERT_EQ(res[0][1], -4);
+	ASSERT_EQ(res[1][0], -4);
+	ASSERT_EQ(res[1][1], -4);
 }
 
 TEST(TDynamicMatrix, cant_subtract_matrixes_with_not_equal_size)
