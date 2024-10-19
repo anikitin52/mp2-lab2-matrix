@@ -26,12 +26,20 @@ TEST(TDynamicMatrix, can_create_copied_matrix)
 
 TEST(TDynamicMatrix, copied_matrix_is_equal_to_source_one)
 {
-	ADD_FAILURE();
+	const int size = 2;
+	TDynamicMatrix<int> m1(size);
+	TDynamicMatrix<int> m2(m1);
+
+	ASSERT_EQ(m1, m2);
+	
 }
 
 TEST(TDynamicMatrix, copied_matrix_has_its_own_memory)
 {	
-	ADD_FAILURE();
+	const int size = 2;
+	TDynamicMatrix<int> m1(size);
+	TDynamicMatrix<int> m2(m1);
+	ASSERT_NE(m1.getMem(), m2.getMem());
 }
 
 TEST(TDynamicMatrix, can_get_size)
@@ -44,15 +52,14 @@ TEST(TDynamicMatrix, can_get_size)
 
 TEST(TDynamicMatrix, can_set_and_get_element)
 {
-	const int size = 3;
-	TDynamicVector<int> v(size);
-	v[0] = 1; v[1] = 2; v[2] = 3;
-
+	const int size = 2;
 	TDynamicMatrix<int> m(size);
+	m[0][0] = 1;
+	m[0][1] = 2;
+	m[1][0] = 3;
+	m[1][1] = 4;
 
-	m[0] = v;
-
-	EXPECT_EQ(v, m[0]);
+	EXPECT_EQ(2, m[0][1]);
 }
 
 TEST(TDynamicMatrix, throws_when_set_element_with_negative_index)
@@ -72,31 +79,42 @@ TEST(TDynamicMatrix, throws_when_set_element_with_too_large_index)
 }
 
 TEST(TDynamicMatrix, can_assign_matrix_to_itself)
-{ /*
+{ 
 	const int size = 3;
 	TDynamicMatrix<int> m(size);
 
 	ASSERT_EQ(m = m, m);
-	*/
+	
 }
 
 TEST(TDynamicMatrix, can_assign_matrices_of_equal_size)
-{
-  ADD_FAILURE();
+{ 
+	const int size = 2;
+	TDynamicMatrix<int> m1(size);
+	TDynamicMatrix<int> m2(size);
+
+	ASSERT_EQ(m2 = m1, m1);
+	
 }
 
 TEST(TDynamicMatrix, assign_operator_change_matrix_size)
 {
-  ADD_FAILURE();
-}
-
-TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
-{/*
-	const int size = 2; // ERROR!
+	const int size = 2;
 	TDynamicMatrix<int> m1(size);
 	TDynamicMatrix<int> m2(size + 1);
 
-	ASSERT_EQ(m2 = m1, m1); */
+	m2 = m1;
+
+	ASSERT_EQ(m2.size(), size);
+}
+
+TEST(TDynamicMatrix, can_assign_matrices_of_different_size)
+{
+	const int size = 2;
+	TDynamicMatrix<int> m1(size);
+	TDynamicMatrix<int> m2(size + 1);
+	m2 = m1;
+	ASSERT_EQ(m2, m1);
 }
 
 TEST(TDynamicMatrix, compare_equal_matrices_return_true)

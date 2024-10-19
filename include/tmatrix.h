@@ -65,6 +65,9 @@ public:
       delete[] pMem;
   }
 
+  T* getMem() {
+      return pMem;
+  }
 
   TDynamicVector& operator=(const TDynamicVector& v)
   {
@@ -238,15 +241,21 @@ public:
 
     using TDynamicVector<TDynamicVector<T>>::size;
     using TDynamicVector<TDynamicVector<T>>::at;
-    using TDynamicVector<TDynamicVector<T>>::operator=;
     using TDynamicVector<TDynamicVector<T>>::operator*;
     using TDynamicVector<TDynamicVector<T>>::operator[];
+    using TDynamicVector<TDynamicVector<T>>::getMem;
+
 
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
+      if (sz > MAX_MATRIX_SIZE) {
+          throw "ERROR!";
+      }
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
+
+
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const 
@@ -317,6 +326,7 @@ public:
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
+      return ostr;
   }
 };
 
