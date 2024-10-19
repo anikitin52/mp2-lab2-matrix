@@ -1,7 +1,7 @@
 ﻿// ННГУ, ИИТММ, Курс "Алгоритмы и структуры данных"
 //
-// Copyright (c) Сысоев А.В.
-//
+// Никитин А. А.
+// 3823Б1ФИ2
 //
 
 #ifndef __TDynamicMatrix_H__
@@ -24,7 +24,6 @@ protected:
   T* pMem;
 public:
 
-
   TDynamicVector(size_t size = 1) : sz(size)
   {
     if (sz == 0)
@@ -35,7 +34,6 @@ public:
     pMem = new T[sz]();
   }
 
-
   TDynamicVector(T* arr, size_t s) : sz(s)
   {
     assert(arr != nullptr && "TDynamicVector ctor requires non-nullptr arg");
@@ -43,13 +41,11 @@ public:
     std::copy(arr, arr + sz, pMem);
   }
 
-
   TDynamicVector(const TDynamicVector& v) {
       this->sz = v.sz;
       pMem = new T[sz];
       std::copy(v.pMem, v.pMem + sz, pMem);
   }
-
 
   TDynamicVector(TDynamicVector&& v) noexcept
   {
@@ -58,7 +54,6 @@ public:
       this->sz = v.sz;
       v.sz = 0;
   }
-
 
   ~TDynamicVector()
   {
@@ -86,7 +81,6 @@ public:
       swap(*this, v);
       return *this;
   }
-
 
   size_t size() const noexcept { return sz; }
 
@@ -176,7 +170,7 @@ public:
   TDynamicVector operator+(const TDynamicVector& v)
   {
       if (this->size() != v.size()) {
-          throw "Error!";
+          throw "Error! The lengths of the vectors are not equal";
       }
       TDynamicVector res(sz);
       for (int i = 0; i < res.sz; i++) {
@@ -187,7 +181,7 @@ public:
   TDynamicVector operator-(const TDynamicVector& v)
   {
       if (this->size() != v.size()) {
-          throw "Error!";
+          throw "Error! The lengths of the vectors are not equal";
       }
       TDynamicVector<T> res(*this);
       for (int i = 0; i < sz; i++) {
@@ -198,7 +192,7 @@ public:
   T operator*(const TDynamicVector& v) 
   {
       if (this->size() != v.size()) {
-          throw "Error!";
+          throw "Error! The lengths of the vectors are not equal";
       }
       T res = 0;
       for (int i = 0; i < v.sz; i++) {
@@ -249,13 +243,11 @@ public:
   TDynamicMatrix(size_t s = 1) : TDynamicVector<TDynamicVector<T>>(s)
   {
       if (sz > MAX_MATRIX_SIZE) {
-          throw "ERROR!";
+          throw "ERROR! The maximum size of the matrix has been exceeded";
       }
     for (size_t i = 0; i < sz; i++)
       pMem[i] = TDynamicVector<T>(sz);
   }
-
-
 
   // сравнение
   bool operator==(const TDynamicMatrix& m) const 
@@ -323,9 +315,18 @@ public:
   // ввод/вывод
   friend istream& operator>>(istream& istr, TDynamicMatrix& v)
   {
+      for (int i = 0; i < v.sz; i++)
+          for (int i = 0; i < pMem[i].sz; i++)
+              istr >> v.pMem[i].pMem[i];
+      return istr;
   }
   friend ostream& operator<<(ostream& ostr, const TDynamicMatrix& v)
   {
+      for (int i = 0; i < v.sz; i++) {
+          for (int j = 0; j < v.sz; j++)
+              ostr << v.pMem[i][j] << " ";
+      }
+
       return ostr;
   }
 };
