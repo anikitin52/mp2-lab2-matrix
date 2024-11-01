@@ -169,7 +169,7 @@ public:
     TDynamicVector operator+(const TDynamicVector& v)
     {
         if (this->size() != v.size()) {
-            throw "Error! The lengths of the vectors are not equal";
+            throw "Error! The lengths of the vectors are not equal!";
         }
         TDynamicVector res(sz);
         for (int i = 0; i < res.sz; i++) {
